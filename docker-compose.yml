@@ -4,7 +4,7 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: Serwer nginx
+    container_name: nginx
     ports:
       - 4001:80
     volumes:
@@ -18,7 +18,7 @@ services:
 
   php:
     image: php:8.2-fpm-alpine
-    container_name: Serwer PHP
+    container_name: php
     volumes:
       - ./www:/var/www/html
     networks:
@@ -29,7 +29,7 @@ services:
 
   mysql:
     image: mysql:8.0
-    container_name: Serwer Mysql
+    container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: testdb
@@ -42,7 +42,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin:latest
-    container_name: Serwer PhpMyAdmin
+    container_name: phpmyadmin
     ports:
       - "6001:80"
     environment:
