@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+
+  nginx:
+    image: nginx:alpine
+    container_name: Serwer nginx
+    ports:
+      - 4001:80
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./www:/var/www/html
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - php
+
+  php:
+    image: php:8.2-fpm-alpine
+    container_name: Serwer PHP
+    volumes:
+      - ./www:/var/www/html
+    networks:
+      - backend
+    environment:
+      - PHP_FPM_LISTEN=9000
+
+
+  mysql:
+    image: mysql:8.0
+    container_name: Serwer Mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: testpassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - backend
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: Serwer PhpMyAdmin
+    ports:
+      - "6001:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: rootpassword
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
