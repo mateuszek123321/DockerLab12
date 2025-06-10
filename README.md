@@ -1,5 +1,5 @@
 # Labolatrium 12
-
+Stworzenie docker-compose ze stackiem LEMP.
 
 ### Polecenie 1
 uruchomienie pliku compose:

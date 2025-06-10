@@ -6,13 +6,13 @@ services:
     image: nginx:alpine
     container_name: nginx
     ports:
-      - 4001:80
+      - 4001:80   #zewnetrzny 4001
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./www:/var/www/html
+      - ./www:/var/www/html       #pliki php/html
     networks:
-      - frontend
-      - backend
+      - frontend    #internet
+      - backend   #komunikacja z php 
     depends_on:
       - php
 
@@ -20,9 +20,9 @@ services:
     image: php:8.2-fpm-alpine
     container_name: php
     volumes:
-      - ./www:/var/www/html
+      - ./www:/var/www/html     #wspoldzielone pliki nginx
     networks:
-      - backend
+      - backend     #wewnetrzna komunikacja
     environment:
       - PHP_FPM_LISTEN=9000
 
@@ -32,7 +32,7 @@ services:
     container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: testdb
+      MYSQL_DATABASE: testdb    #automatycznie tworzona baza 
       MYSQL_USER: testuser
       MYSQL_PASSWORD: testpassword
     volumes:
@@ -46,12 +46,12 @@ services:
     ports:
       - "6001:80"
     environment:
-      PMA_HOST: mysql
+      PMA_HOST: mysql     #polaczenie z baza mysql
       PMA_PORT: 3306
       MYSQL_ROOT_PASSWORD: rootpassword
     networks:
-      - frontend
-      - backend
+      - frontend      #dostep z przegladarki
+      - backend       #polaczenie z mysql
     depends_on:
       - mysql
 
